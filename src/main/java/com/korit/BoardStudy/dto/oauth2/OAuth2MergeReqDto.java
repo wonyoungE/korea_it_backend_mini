@@ -13,7 +13,6 @@ public class OAuth2MergeReqDto {
     public OAuth2User toOAuth2User(Integer userId) {
         return OAuth2User.builder()
                 .userId(userId)
-                .hashCode(password)
                 .provider(provider)
                 .providerUserId(providerUserId)
                 .build();

@@ -40,7 +40,6 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
 
         // 회원가입된 사람 있는지 확인
         Optional<OAuth2User> optionalOAuth2User = oAuth2UserRepository.getOAuth2UserByProviderAndProviderUserId(provider, providerUserId);
-
         if(optionalOAuth2User.isEmpty()) {
             response.sendRedirect("http://localhost:3000/auth/oauth2?provider=" + provider
                     + "&providerUserId=" + providerUserId + "&email=" + email);
