@@ -35,7 +35,8 @@ public class OAuth2PrincipalUserService extends DefaultOAuth2UserService {
             case "kakao":
                 id = attributes.get("id").toString();
                 Map<String, Object> kakaoAccount = (Map<String, Object>) attributes.get("kakao_account");
-                email = "email@kakao.com";
+//                email = (String) kakaoAccount.get("email");
+                email = "kakao@kakao.com";
                 break;
         }
 

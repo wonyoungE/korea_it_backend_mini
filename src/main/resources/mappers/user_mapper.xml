@@ -107,4 +107,13 @@
         VALUES
             (0, #{username}, #{password}, #{email}, NOW(), NULL)
     </insert>
+    <update id="updatePassword">
+        UPDATE
+            user_tb
+        SET
+            password = #{password},
+            update_dt = NOW()
+        WHERE
+            user_id = #{userId}
+    </update>
 </mapper>

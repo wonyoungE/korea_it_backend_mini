@@ -23,4 +23,33 @@
         VALUES
             (0, #{userId}, #{roleId}, NOW(), NULL)
     </insert>
+
+    <select id="getUserRoleByUserIdAndRoleId" resultMap="UserRoleResultMap">
+        SELECT
+            urt.user_role_id,
+            urt.user_id,
+            urt.role_id AS urt_role_id,
+            urt.create_dt,
+            urt.update_dt,
+
+            rt.role_id,
+            rt.role_name,
+            rt.role_name_kor
+        FROM
+            user_role_tb urt
+            LEFT JOIN role_tb rt ON (urt.role_id = rt.role_id)
+        WHERE
+            urt.user_id = #{userId} AND
+            urt.role_id = #{roleId}
+    </select>
+    <update id="updateRoleId">
+        UPDATE
+            user_role_tb
+        SET
+            role_id = 2,
+            update_dt = NOW()
+        WHERE
+            user_role_id = #{userRoleId} AND
+            user_id = #{userId}
+    </update>
 </mapper>
