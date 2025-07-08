@@ -62,4 +62,13 @@
         FROM
             board_tb
     </select>
+    <update id="updateBoard">
+        UPDATE
+            board_tb
+        SET
+            title = #{title},
+            content = #{content}
+        WHERE
+            board_id = #{boardId}
+    </update>
 </mapper>

@@ -29,4 +29,8 @@ public class BoardRepository {
     public List<Board> getBoardList() {
         return boardMapper.getBoardList();
     }
+
+    public int updateBoard(Board board) {
+        return boardMapper.updateBoard(board);
+    }
 }
