@@ -3,5 +3,10 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.korit.BoardStudy.mapper.BoardMapper">
-
+    <insert id="addBoard">
+        INSERT INTO
+            board_tb
+        VALUES
+            (0, #{title}, #{content}, #{userId}, NOW(), NULL)
+    </insert>
 </mapper>
