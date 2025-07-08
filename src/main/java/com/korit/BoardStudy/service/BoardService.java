@@ -48,17 +48,12 @@ public class BoardService {
         if(boardId == null || boardId <= 0) {
             return new ApiRespDto<>("failed", "유효하지 않은 게시물 ID입니다.", null);
         }
-        Optional<Board> optionalBoard = boardRepository.getBoardByBoardId(boardId);
+        Optional<GetBoardRespDto> optionalBoard = boardRepository.getBoardByBoardId(boardId);
         if(optionalBoard.isPresent()) {
             return new ApiRespDto<>("success", "게시물 조회 성공", optionalBoard.get());
         } else {
             return new ApiRespDto<>("failed", "해당 ID의 게시물을 찾을 수 없습니다.", null);
         }
-    }
-
-    public ApiRespDto<?> getBoard(Integer boardId) {
-        Optional<GetBoardRespDto> optionalBoard = boardRepository.getBoard(boardId);
-        return new ApiRespDto<>("success", "게시물 조회 성공", optionalBoard.get());
     }
 
     public ApiRespDto<?> getBoardList() {

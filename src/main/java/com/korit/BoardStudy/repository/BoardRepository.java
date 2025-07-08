@@ -18,12 +18,8 @@ public class BoardRepository {
         return boardMapper.addBoard(board);
     }
 
-    public Optional<Board> getBoardByBoardId(Integer boardId) {
+    public Optional<GetBoardRespDto> getBoardByBoardId(Integer boardId) {
         return boardMapper.getBoardByBoardId(boardId);
-    }
-
-    public Optional<GetBoardRespDto> getBoard(Integer boardId) {
-        return boardMapper.getBoard(boardId);
     }
 
     public List<Board> getBoardList() {

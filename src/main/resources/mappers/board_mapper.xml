@@ -11,11 +11,14 @@
         <result property="createDt" column="create_dt"/>
         <result property="updateDt" column="update_dt"/>
     </resultMap>
+
     <resultMap id="UserResultMap" type="com.korit.BoardStudy.entity.User">
         <id property="userId" column="user_id"/>
         <result property="username" column="username"/>
         <result property="password" column="password"/>
         <result property="email" column="email"/>
+        <result property="createDt" column="create_dt"/>
+        <result property="updateDt" column="update_dt"/>
     </resultMap>
     <resultMap id="GetBoardRespDtoResultMap" type="com.korit.BoardStudy.dto.board.GetBoardRespDto">
         <id property="boardId" column="board_id"/>
@@ -29,15 +32,7 @@
         VALUES
             (0, #{title}, #{content}, #{userId}, NOW(), NULL)
     </insert>
-    <select id="getBoardByBoardId" resultMap="BoardResultMap">
-        SELECT
-            *
-        FROM
-            board_tb
-        WHERE
-            board_id = #{boardId}
-    </select>
-    <select id="getBoard" resultMap="GetBoardRespDtoResultMap">
+    <select id="getBoardByBoardId" resultMap="GetBoardRespDtoResultMap">
         SELECT
             bt.board_id,
             bt.title,
