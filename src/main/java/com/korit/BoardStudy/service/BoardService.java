@@ -2,6 +2,8 @@ package com.korit.BoardStudy.service;
 
 import com.korit.BoardStudy.dto.ApiRespDto;
 import com.korit.BoardStudy.dto.board.AddBoardReqDto;
+import com.korit.BoardStudy.dto.board.GetBoardRespDto;
+import com.korit.BoardStudy.entity.Board;
 import com.korit.BoardStudy.entity.User;
 import com.korit.BoardStudy.repository.BoardRepository;
 import com.korit.BoardStudy.security.model.PrincipalUser;
@@ -9,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -38,6 +41,32 @@ public class BoardService {
             return new ApiRespDto<>("success", "게시물이 성공적으로 추가되었습니다 ", null);
         } catch (Exception e) {
             return new ApiRespDto<>("failed", "서버 오류로 게시물 추가에 실패했습니다. " + e.getMessage(), null);
+        }
+    }
+
+    public ApiRespDto<?> getBoardByBoardId(Integer boardId) {
+        if(boardId == null || boardId <= 0) {
+            return new ApiRespDto<>("failed", "유효하지 않은 게시물 ID입니다.", null);
+        }
+        Optional<Board> optionalBoard = boardRepository.getBoardByBoardId(boardId);
+        if(optionalBoard.isPresent()) {
+            return new ApiRespDto<>("success", "게시물 조회 성공", optionalBoard.get());
+        } else {
+            return new ApiRespDto<>("failed", "해당 ID의 게시물을 찾을 수 없습니다.", null);
+        }
+    }
+
+    public ApiRespDto<?> getBoard(Integer boardId) {
+        Optional<GetBoardRespDto> optionalBoard = boardRepository.getBoard(boardId);
+        return new ApiRespDto<>("success", "게시물 조회 성공", optionalBoard.get());
+    }
+
+    public ApiRespDto<?> getBoardList() {
+        List<Board> boardList = boardRepository.getBoardList();
+        if(boardList.isEmpty()) {
+            return new ApiRespDto<>("failed", "조회할 게시물이 없습니다.", null);
+        } else {
+            return new ApiRespDto<>("success", "게시물 목록 조회 성공", boardList);
         }
     }
 }

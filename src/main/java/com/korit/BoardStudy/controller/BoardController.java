@@ -6,10 +6,7 @@ import com.korit.BoardStudy.service.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/board")
@@ -21,5 +18,16 @@ public class BoardController {
     public ResponseEntity<?> addBoard(@RequestBody AddBoardReqDto addBoardReqDto,
                                       @AuthenticationPrincipal PrincipalUser principalUser) {
         return ResponseEntity.ok(boardService.addBoard(addBoardReqDto, principalUser));
+    }
+
+    @GetMapping("/{boardId}")
+    public ResponseEntity<?> getBoardByBoardId(@PathVariable Integer boardId) {
+        return ResponseEntity.ok(boardService.getBoardByBoardId(boardId));
+//        return ResponseEntity.ok(boardService.getBoard(boardId));
+    }
+
+    @GetMapping("/list")
+    public ResponseEntity<?> getBoardList() {
+        return ResponseEntity.ok(boardService.getBoardList());
     }
 }
