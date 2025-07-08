@@ -10,6 +10,8 @@ import java.util.Optional;
 @Mapper
 public interface BoardMapper {
     int addBoard(Board board);
+    int deleteBoard(Integer boardId);
     Optional<GetBoardRespDto> getBoardByBoardId(Integer boardId);
     List<Board> getBoardList();
+
 }

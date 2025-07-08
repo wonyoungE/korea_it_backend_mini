@@ -20,6 +20,12 @@ public class BoardController {
         return ResponseEntity.ok(boardService.addBoard(addBoardReqDto, principalUser));
     }
 
+    @DeleteMapping("/{boardId}")
+    public ResponseEntity<?> deleteBoard(@PathVariable Integer boardId,
+                                         @AuthenticationPrincipal PrincipalUser principalUser) {
+        return ResponseEntity.ok(boardService.deleteBoardId(boardId, principalUser));
+    }
+
     @GetMapping("/{boardId}")
     public ResponseEntity<?> getBoardByBoardId(@PathVariable Integer boardId) {
         return ResponseEntity.ok(boardService.getBoardByBoardId(boardId));

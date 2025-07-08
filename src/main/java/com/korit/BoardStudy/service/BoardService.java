@@ -2,6 +2,7 @@ package com.korit.BoardStudy.service;
 
 import com.korit.BoardStudy.dto.ApiRespDto;
 import com.korit.BoardStudy.dto.board.AddBoardReqDto;
+import com.korit.BoardStudy.dto.board.DeleteBoardReqDto;
 import com.korit.BoardStudy.dto.board.GetBoardRespDto;
 import com.korit.BoardStudy.entity.Board;
 import com.korit.BoardStudy.entity.User;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -41,6 +43,28 @@ public class BoardService {
             return new ApiRespDto<>("success", "게시물이 성공적으로 추가되었습니다 ", null);
         } catch (Exception e) {
             return new ApiRespDto<>("failed", "서버 오류로 게시물 추가에 실패했습니다. " + e.getMessage(), null);
+        }
+    }
+
+    public ApiRespDto<?> deleteBoardId(Integer boardId, PrincipalUser principalUser) {
+        if(boardId == null || boardId <= 0) {
+            return new ApiRespDto<>("failed", "유효하지 않은 게시물 ID입니다.", null);
+        }
+
+        Optional<GetBoardRespDto> optionalBoard = boardRepository.getBoardByBoardId(boardId);
+        if(optionalBoard.isEmpty()) {
+            return new ApiRespDto<>("failed", "존재하지 않는 게시물입니다.", null);
+        }
+        GetBoardRespDto board = optionalBoard.get();
+        if(!Objects.equals(board.getUser().getUserId(), principalUser.getUserId())) {
+            return new ApiRespDto<>("failed", "해당 게시물에 대한 삭제 권한이 없습니다.", null);
+        }
+
+        int result = boardRepository.deleteBoard(boardId);
+        if(result != 1) {
+            return new ApiRespDto<>("failed", "게시물 삭제 실패", null);
+        } else {
+            return new ApiRespDto<>("success", "게시물 삭제 성공", null);
         }
     }
 

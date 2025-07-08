@@ -32,6 +32,12 @@
         VALUES
             (0, #{title}, #{content}, #{userId}, NOW(), NULL)
     </insert>
+    <delete id="deleteBoard">
+        DELETE FROM
+            board_tb
+        WHERE
+            board_id = #{boardId}
+    </delete>
     <select id="getBoardByBoardId" resultMap="GetBoardRespDtoResultMap">
         SELECT
             bt.board_id,
