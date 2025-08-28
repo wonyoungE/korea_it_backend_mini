@@ -21,7 +21,7 @@ public class BoardController {
         return ResponseEntity.ok(boardService.addBoard(addBoardReqDto, principalUser));
     }
 
-    @DeleteMapping("/{boardId}")
+    @PostMapping("/delete/{boardId}")
     public ResponseEntity<?> deleteBoard(@PathVariable Integer boardId,
                                          @AuthenticationPrincipal PrincipalUser principalUser) {
         return ResponseEntity.ok(boardService.deleteBoardId(boardId, principalUser));
@@ -33,8 +33,8 @@ public class BoardController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<?> getBoardList() {
-        return ResponseEntity.ok(boardService.getBoardList());
+    public ResponseEntity<?> getBoardList(@RequestParam int page, @RequestParam int size) {
+        return ResponseEntity.ok(boardService.getBoardList(page, size));
     }
 
     @PostMapping("/update")

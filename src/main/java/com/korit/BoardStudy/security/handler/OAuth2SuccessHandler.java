@@ -41,7 +41,7 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
         // 회원가입된 사람 있는지 확인
         Optional<OAuth2User> optionalOAuth2User = oAuth2UserRepository.getOAuth2UserByProviderAndProviderUserId(provider, providerUserId);
         if(optionalOAuth2User.isEmpty()) {
-            response.sendRedirect("http://localhost:3000/auth/oauth2?provider=" + provider
+            response.sendRedirect("http://localhost:5173/auth/oauth2?provider=" + provider
                     + "&providerUserId=" + providerUserId + "&email=" + email);
             return;
         }
@@ -54,6 +54,6 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
             accessToken = jwtUtils.generateAccessToken(optionalUser.get().getUserId().toString());
         }
 
-        response.sendRedirect("http://localhost:3000/auth/oauth2/signin?accessToken=" + accessToken);
+        response.sendRedirect("http://localhost:5173/auth/oauth2/signin?accessToken=" + accessToken);
     }
 }

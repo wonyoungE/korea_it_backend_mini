@@ -26,11 +26,15 @@ public class BoardRepository {
         return boardMapper.getBoardByBoardId(boardId);
     }
 
-    public List<Board> getBoardList() {
-        return boardMapper.getBoardList();
+    public List<Board> getBoardList(int size, int offset) {
+        return boardMapper.getBoardList(size, offset);
     }
 
     public int updateBoard(Board board) {
         return boardMapper.updateBoard(board);
+    }
+
+    public int getBoardCount() {
+        return boardMapper.getBoardCount();
     }
 }

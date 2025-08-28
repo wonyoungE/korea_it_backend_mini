@@ -2,6 +2,7 @@ package com.korit.BoardStudy.service;
 
 import com.korit.BoardStudy.dto.ApiRespDto;
 import com.korit.BoardStudy.dto.board.AddBoardReqDto;
+import com.korit.BoardStudy.dto.board.GetBoardListRespDto;
 import com.korit.BoardStudy.dto.board.GetBoardRespDto;
 import com.korit.BoardStudy.dto.board.UpdateBoardReqDto;
 import com.korit.BoardStudy.entity.Board;
@@ -37,14 +38,15 @@ public class BoardService {
         try {
             int result = boardRepository.addBoard(addBoardReqDto.toEntity());
             if(result != 1) {
-                return new ApiRespDto<>("failed", "게시물 추가에 실패했습니다 ", null);
+                return new ApiRespDto<>("failed", "게시물 추가에 실패했습니다. ", null);
             }
-            return new ApiRespDto<>("success", "게시물이 성공적으로 추가되었습니다 ", null);
+            return new ApiRespDto<>("success", "게시물이 성공적으로 추가되었습니다.", null);
         } catch (Exception e) {
             return new ApiRespDto<>("failed", "서버 오류로 게시물 추가에 실패했습니다. " + e.getMessage(), null);
         }
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public ApiRespDto<?> deleteBoardId(Integer boardId, PrincipalUser principalUser) {
         if(boardId == null || boardId <= 0) {
             return new ApiRespDto<>("failed", "유효하지 않은 게시물 ID입니다.", null);
@@ -79,13 +81,26 @@ public class BoardService {
         }
     }
 
-    public ApiRespDto<?> getBoardList() {
-        List<Board> boardList = boardRepository.getBoardList();
+    @Transactional(rollbackFor = Exception.class)
+    public ApiRespDto<?> getBoardList(int page, int size) {
+        int offset = page * size; // 페이지 시작점
+        int totalCount = boardRepository.getBoardCount();
+        List<Board> boardList = boardRepository.getBoardList(size, offset);
+
         if(boardList.isEmpty()) {
             return new ApiRespDto<>("failed", "조회할 게시물이 없습니다.", null);
-        } else {
-            return new ApiRespDto<>("success", "게시물 목록 조회 성공", boardList);
         }
+
+        // 전체 페이지 수
+        int totalPage = (int) Math.ceil((double)totalCount / size);
+
+        GetBoardListRespDto getBoardListRespDto = GetBoardListRespDto.builder()
+                .totalPages(totalPage)
+                .totalCount(totalCount)
+                .boardList(boardList)
+                .build();
+
+        return new ApiRespDto<>("success", "게시물 목록 조회 성공", getBoardListRespDto);
     }
 
     public ApiRespDto<?> updateBoard(UpdateBoardReqDto updateBoardReqDto, PrincipalUser principalUser) {
@@ -94,12 +109,18 @@ public class BoardService {
             return new ApiRespDto<>("failed", "존재하지 않는 게시물입니다.", null);
         }
         GetBoardRespDto board = optionalBoard.get();
-        if(!Objects.equals(board.getUser().getUserId(), principalUser)) {
+        if(!Objects.equals(board.getUser().getUserId(), principalUser.getUserId())) {
             return new ApiRespDto<>("failed", "해당 게시물에 대한 수정 권한이 없습니다.", null);
         }
 
+        Board newBoard = Board.builder()
+                        .boardId(board.getBoardId())
+                        .title(updateBoardReqDto.getTitle())
+                        .content(updateBoardReqDto.getContent())
+                        .userId(board.getUser().getUserId())
+                        .build();
         try {
-            int result = boardRepository.updateBoard(updateBoardReqDto.toEntity());
+            int result = boardRepository.updateBoard(newBoard);
             if(result != 1) {
                 return new ApiRespDto<>("failed", "게시물 수정에 실패했습니다.", null);
             } else {
