@@ -13,6 +13,7 @@ public interface BoardMapper {
     int deleteBoard(Integer boardId);
     Optional<GetBoardRespDto> getBoardByBoardId(Integer boardId);
     List<Board> getBoardList(int size, int offset);
+    List<Board> getBoardListByUserId(int userId);
     int updateBoard(Board board);
     int getBoardCount();
 }

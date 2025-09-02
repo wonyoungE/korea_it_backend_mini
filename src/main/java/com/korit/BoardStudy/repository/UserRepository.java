@@ -38,4 +38,8 @@ public class UserRepository {
     public int updatePassword(User user) {
         return userMapper.updatePassword(user);
     }
+
+    public int updateUser(User user) {
+        return userMapper.updateUser(user);
+    }
 }

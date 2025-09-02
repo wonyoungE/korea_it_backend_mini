@@ -30,6 +30,10 @@ public class BoardRepository {
         return boardMapper.getBoardList(size, offset);
     }
 
+    public List<Board> getBoardListByUserId(int userId) {
+        return boardMapper.getBoardListByUserId(userId);
+    }
+
     public int updateBoard(Board board) {
         return boardMapper.updateBoard(board);
     }

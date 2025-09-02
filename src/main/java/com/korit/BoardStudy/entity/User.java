@@ -19,6 +19,7 @@ public class User {
     @JsonIgnore
     private String password;
     private String email;
+    private String profileImg;
     private LocalDateTime createDt;
     private LocalDateTime updateDt;
     private List<UserRole> userRoles;

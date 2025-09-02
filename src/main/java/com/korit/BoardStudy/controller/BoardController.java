@@ -37,6 +37,11 @@ public class BoardController {
         return ResponseEntity.ok(boardService.getBoardList(page, size));
     }
 
+    @GetMapping("/list/{userId}")
+    public ResponseEntity<?> getBoardListByUserId(@PathVariable Integer userId) {
+        return ResponseEntity.ok(boardService.getBoardListByUserId(userId));
+    }
+
     @PostMapping("/update")
     public ResponseEntity<?> updateBoard(@RequestBody UpdateBoardReqDto updateBoardReqDto,
                                          @AuthenticationPrincipal PrincipalUser principalUser) {

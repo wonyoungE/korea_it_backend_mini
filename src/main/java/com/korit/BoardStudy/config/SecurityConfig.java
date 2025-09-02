@@ -34,6 +34,7 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.addAllowedOriginPattern(CorsConfiguration.ALL);
+        corsConfiguration.addAllowedOrigin("http://localhost:5173");
         corsConfiguration.addAllowedMethod(CorsConfiguration.ALL);
         corsConfiguration.addAllowedHeader(CorsConfiguration.ALL);
 
@@ -55,7 +56,7 @@ public class SecurityConfig {
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         http.authorizeHttpRequests(auth -> {
-            auth.requestMatchers("/auth/**" , "/oauth2/**", "/login/oauth2/**", "/mail/verify").permitAll();
+            auth.requestMatchers("/auth/**" , "/oauth2/**", "/login/oauth2/**", "/mail/verify", "/swagger-ui/**", "/v3/api-docs/**").permitAll();
             auth.anyRequest().authenticated();
         });
 

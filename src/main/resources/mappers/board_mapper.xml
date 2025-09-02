@@ -78,6 +78,14 @@
             bt.create_dt DESC
         LIMIT #{size} OFFSET #{offset};
     </select>
+    <select id="getBoardListByUserId">
+        SELECT
+            *
+        FROM
+            board_tb
+        WHERE
+            user_id = #{userId}
+    </select>
     <select id="getBoardCount" resultType="java.lang.Integer">
         SELECT
             COUNT(*)

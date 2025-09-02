@@ -81,6 +81,16 @@ public class BoardService {
         }
     }
 
+    public ApiRespDto<?> getBoardListByUserId(Integer userId) {
+        List<Board> boardList = boardRepository.getBoardListByUserId(userId);
+
+        if(boardList.isEmpty()) {
+            return new ApiRespDto<>("failed", "조회할 게시물이 없습니다.", null);
+        }
+
+        return new ApiRespDto<>("success", "게시물 목록 조회 성공", boardList);
+    }
+
     @Transactional(rollbackFor = Exception.class)
     public ApiRespDto<?> getBoardList(int page, int size) {
         int offset = page * size; // 페이지 시작점
